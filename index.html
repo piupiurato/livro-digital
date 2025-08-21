@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Livro Digital do Amor 💖</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #ffe6f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .book {
+      position: relative;
+      width: 80vw;      /* 80% da largura da tela */
+      max-width: 500px; /* tamanho máximo */
+      height: 60vh;     /* 60% da altura da tela */
+      max-height: 600px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      overflow: hidden;
+      padding: 20px;
+      text-align: center;
+    }
+    
+
+    .page {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      animation: fadeIn 0.6s ease;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .nav {
+      position: absolute;
+      top: 60%; /* estava 50%, baixei para 60% */
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      padding: 0 10px;
+      pointer-events: none;
+    }
+    
+    
+    .nav button {
+      pointer-events: all; /* ativa clique */
+      width: 50px;
+      height: 50px;
+      border: none;
+      border-radius: 50%;
+      font-size: 26px;
+      font-weight: bold;
+      cursor: pointer;
+      background: white;
+      color: #ff4081;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+    
+    .nav button:hover {
+      background: #ff4081;
+      color: white;
+      transform: scale(1.1);
+    }
+    
+
+    button {
+      width: 50px;
+      height: 50px;
+      background: #ff4081;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-weight: bold;
+      font-size: 22px; /* aumenta o tamanho da seta */
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    button:hover {
+      background: #e73370;
+      transform: scale(1.1); /* ligeiro zoom ao passar o rato */
+    }
+
+
+    h1, h2 {
+      color: #ff4081;
+    }
+  </style>
+</head>
+<body>
+  <div class="book">
+    <div class="page active">
+      <h1>💖 Livro do Amor 💖</h1>
+      <p>Hoje celebramos 7 meses juntos, meu amor!</p>
+    </div>
+
+    <div class="page">
+      <h2>Capítulo 1</h2>
+      <p>Desde o primeiro dia, descobri em ti alguém especial.</p>
+    </div>
+
+    <div class="page">
+      <h2>Capítulo 2</h2>
+      <p>O teu sorriso ilumina os meus dias e o teu carinho acalma a minha alma.</p>
+    </div>
+
+    <div class="page">
+      <h2>Capítulo 3</h2>
+      <p>Prometo continuar a escrever esta história contigo, página após página. ❤️</p>
+    </div>
+
+    <div class="page">
+      <h1>Fim ✨</h1>
+      <p>Mas a nossa história continua... 💑</p>
+    </div>
+
+    <div class="nav">
+      <button id="prev">⬅</button>
+      <button id="next">➡</button>
+    </div>
+  </div>
+
+  <script>
+    const pages = document.querySelectorAll(".page");
+    let current = 0;
+
+    function showPage(index) {
+      pages.forEach((p, i) => p.classList.toggle("active", i === index));
+    }
+
+    document.getElementById("next").addEventListener("click", () => {
+      current = (current + 1) % pages.length;
+      showPage(current);
+    });
+
+    document.getElementById("prev").addEventListener("click", () => {
+      current = (current - 1 + pages.length) % pages.length;
+      showPage(current);
+    });
+
+    // Swipe no telemóvel
+    let startX = 0;
+    document.querySelector(".book").addEventListener("touchstart", e => {
+      startX = e.touches[0].clientX;
+    });
+    document.querySelector(".book").addEventListener("touchend", e => {
+      let endX = e.changedTouches[0].clientX;
+      if (startX - endX > 50) {
+        current = (current + 1) % pages.length;
+      } else if (endX - startX > 50) {
+        current = (current - 1 + pages.length) % pages.length;
+      }
+      showPage(current);
+    });
+  </script>
+</body>
+</html>
